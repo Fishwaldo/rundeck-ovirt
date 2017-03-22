@@ -1,3 +1,21 @@
+/*
+ * Copyright 2014 Dynamx (Singapore) Pte Ltd
+ * 
+ * Based on the RunDeck EC2 Plugin
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ac.dynam.rundeck.plugin.resources.ovirt;
 
 
@@ -7,6 +25,7 @@ import java.util.UUID;
 
 import org.apache.http.client.ClientProtocolException;
 import org.ovirt.engine.sdk.Api;
+import org.ovirt.engine.sdk.ApiBuilder;
 import org.ovirt.engine.sdk.decorators.VM;
 import org.ovirt.engine.sdk.entities.Action;
 import org.ovirt.engine.sdk.exceptions.ServerException;
@@ -19,7 +38,14 @@ public class oVirtSDKWrapper {
     public void login(String baseUrl, String userName, String password) {
         try {
             // true for filter, ie enable regular users to login
-            this.api = new Api(baseUrl, userName, password, true);
+            // this.api = new Api(baseUrl, userName, password, true);
+        	this.api = new ApiBuilder()
+        		     .url(baseUrl)
+        		     .user(userName)
+        		     .password(password)
+        		     .debug(true)
+        		     .noHostVerification(false)
+        		     .build();
         } catch (ClientProtocolException e) {
             this.message = "Protocol Exception: " + e.getMessage();
         } catch (ServerException e) {

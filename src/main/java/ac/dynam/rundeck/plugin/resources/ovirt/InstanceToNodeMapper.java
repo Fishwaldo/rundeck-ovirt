@@ -28,6 +28,8 @@ import com.dtolabs.rundeck.core.common.INodeSet;
 import com.dtolabs.rundeck.core.common.NodeEntryImpl;
 import com.dtolabs.rundeck.core.common.NodeSetImpl;
 
+import ac.dynam.rundeck.plugin.resources.ovirt.oVirtSDKWrapper;
+
 import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.Logger;
 
@@ -74,9 +76,12 @@ class InstanceToNodeMapper {
 	private void mapInstances(final NodeSetImpl nodeSet, final List<VM> instances) {
 		for (final VM inst : instances) {
 			logger.debug(this.runningStateOnly + inst.getStatus().getState());
-			if (this.runningStateOnly == true) { 
-				if (!inst.getStatus().getState().equals("up"))
+			if (this.runningStateOnly == true) {
+				String status = inst.getStatus().getState();
+				if (status != null && !status.equals("up"))
 					continue;
+				if (status == null) 
+					logger.warn("VM Status is Undefined: " + inst.getName());
 			}
 			logger.debug(inst.getName());
 			final INodeEntry iNodeEntry;
@@ -199,6 +204,11 @@ class InstanceToNodeMapper {
 	}
 
 	public static class GeneratorException extends Exception {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 6384545528587691313L;
+
 		public GeneratorException() {
 		}
 

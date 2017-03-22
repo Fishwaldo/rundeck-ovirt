@@ -29,7 +29,6 @@ import java.util.*;
 @Plugin(name = "ovirt-source", service = "ResourceModelSource")
 public class oVirtResourceModelSourceFactory implements ResourceModelSourceFactory, Describable {
     public static final String PROVIDER_NAME = "ovirt-source";
-    private Framework framework;
 
     public static final String RUNNING_ONLY = "runningOnly";
     public static final String OVIRT_URL = "ovirtURL";
@@ -38,7 +37,6 @@ public class oVirtResourceModelSourceFactory implements ResourceModelSourceFacto
     public static final String REFRESH_INTERVAL = "refreshInterval";
 
     public oVirtResourceModelSourceFactory(final Framework framework) {
-        this.framework = framework;
     }
 
     public ResourceModelSource createResourceModelSource(final Properties properties) throws ConfigurationException {

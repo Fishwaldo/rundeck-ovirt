@@ -23,6 +23,11 @@ configurations{
         extendsFrom pluginLibs
     }
 }
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
 repositories {
     mavenCentral()
 
@@ -43,7 +48,7 @@ dependencies {
     pluginLibs group: 'stax', name: 'stax', version: '1.2.0'
     pluginLibs group: 'stax-api', name: 'stax-api', version: '1.0.1'
 
-    pluginLibs group: 'org.ovirt.engine.sdk', name: 'ovirt-engine-sdk-java', version: '3.5.1.0'
+    pluginLibs group: 'org.ovirt.engine.sdk', name: 'ovirt-engine-sdk-java', version: '3.6.10.0'
     pluginLibs group: 'commons-httpclient', name: 'commons-httpclient', version: '3.0-rc3' 
 }
 
