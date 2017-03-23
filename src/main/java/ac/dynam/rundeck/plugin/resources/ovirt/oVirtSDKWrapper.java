@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.http.client.ClientProtocolException;
+import org.apache.log4j.Logger;
 import org.ovirt.engine.sdk.Api;
 import org.ovirt.engine.sdk.ApiBuilder;
 import org.ovirt.engine.sdk.decorators.VM;
@@ -34,18 +35,29 @@ import org.ovirt.engine.sdk.exceptions.UnsecuredConnectionAttemptError;
 public class oVirtSDKWrapper {
     private Api api;
     private String message;
+    static Logger logger = Logger.getLogger(oVirtSDKWrapper.class);
 
     public void login(String baseUrl, String userName, String password) {
         try {
             // true for filter, ie enable regular users to login
             // this.api = new Api(baseUrl, userName, password, true);
-        	this.api = new ApiBuilder()
-        		     .url(baseUrl)
+        	if (!isLoggedin()) 
+        	{
+        		this.api = new ApiBuilder()
+        			.url(baseUrl)
         		     .user(userName)
         		     .password(password)
-        		     .debug(true)
-        		     .noHostVerification(false)
+        		     .debug(false)
+        		     .noHostVerification(true)
         		     .build();
+        		logger.debug("Processing....");
+        		if (isLoggedin()) {
+        			logger.info("Successfully Logged into oVirt: " + baseUrl);
+        		} else {
+        			logger.warn("Can't Log into oVirt: " + baseUrl);
+        		}
+        	}
+   
         } catch (ClientProtocolException e) {
             this.message = "Protocol Exception: " + e.getMessage();
         } catch (ServerException e) {
